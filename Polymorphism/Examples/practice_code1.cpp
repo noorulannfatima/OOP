@@ -1,0 +1,103 @@
+#include<iostream>
+#include <list>
+using namespace std;
+
+class YoutubeChannel{
+private:
+    string Name;
+    int SubscribersCount;
+    list<string> PublishedVideoTitles;
+protected:
+    string OwnerName;
+    int ContentQuality;
+public:
+    YoutubeChannel(string name, string ownername){  //constructor
+    Name = name;  
+    OwnerName = ownername;
+    SubscribersCount= 0;
+    ContentQuality =0;
+}
+    void GetInfo(){     // GetInfo Method
+    cout<< "Channel Name : "<<Name<<endl;
+    cout<<"Owner Name : "<<OwnerName<<endl;
+    cout<<"Subscribers : "<<SubscribersCount<<endl;
+    cout<<"Videos : "<<endl;
+    for(string videoTitle : PublishedVideoTitles){
+        cout<<videoTitle<<endl;
+    }
+}    
+    void Subscribe(){
+        SubscribersCount++;
+    }
+    void Unsubscribe(){
+        if(SubscribersCount<0)
+        SubscribersCount--;
+    }
+    void PublishVideo(string Title){
+    PublishedVideoTitles.push_back(Title);
+}
+    void CheckAnalytics(){
+        if(ContentQuality>=1)
+            cout<<Name<<" has Bad Content Quality..."<<endl;
+        else
+            cout<<Name<<" has Good Content Quality..."<<endl;
+    }
+};
+class CookingYoutubeChannel: public YoutubeChannel{
+    public:
+    CookingYoutubeChannel(string name, string ownername):YoutubeChannel(name, ownername){
+    }
+    void OnlineSessions(){
+        cout<<OwnerName<<" Online Cooking Class 101 ..."<<endl;
+        ContentQuality++;
+    }
+};
+class MusicYoutubeChannel: public YoutubeChannel{
+    public:
+    MusicYoutubeChannel(string name, string ownername):YoutubeChannel(name, ownername){
+    }
+    void OnlineSessions(){
+        cout<<OwnerName<<" Online Practice Session 101 ..."<<endl;
+        ContentQuality++;
+    }
+};
+int main(){
+    YoutubeChannel ytchannel("CodeHub", "Alex");
+    ytchannel.PublishVideo("Html & CSS Course");
+    ytchannel.PublishVideo("Java Course");
+    ytchannel.Subscribe();
+    ytchannel.Subscribe();
+    ytchannel.Unsubscribe();
+    ytchannel.GetInfo();
+    CookingYoutubeChannel ytchannel1("Amna's Kitchen", "Amna");
+    ytchannel1.PublishVideo("Sindhi Buryani");
+    ytchannel1.PublishVideo("Choco Lava Cake");
+    ytchannel1.Subscribe();
+    ytchannel1.Subscribe();
+    ytchannel1.Unsubscribe();
+    ytchannel1.GetInfo();
+    ytchannel1.OnlineSessions();
+    CookingYoutubeChannel ytchannel2("Tania's Kitchen", "Tania");
+    ytchannel2.Subscribe();
+    ytchannel2.Subscribe();
+    ytchannel2.Subscribe();
+    ytchannel2.Subscribe();
+    ytchannel2.Unsubscribe();
+    ytchannel2.GetInfo();
+    MusicYoutubeChannel ytchannel3("John'Music", "John.MM");
+    ytchannel3.Subscribe();
+    ytchannel3.Subscribe();
+    ytchannel3.Subscribe();
+    ytchannel3.Subscribe();
+    ytchannel3.Unsubscribe();
+    ytchannel3.GetInfo();
+    ytchannel3.OnlineSessions();
+// pointer of base class can points to a variable of derived class
+    YoutubeChannel* ytb1= &ytchannel2;
+    YoutubeChannel* ytb2= &ytchannel3;
+    // envoke methods using pointers
+    ytb1->CheckAnalytics();
+    ytb2->CheckAnalytics();
+
+    return 0;
+}
